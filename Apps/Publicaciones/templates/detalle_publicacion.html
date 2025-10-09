@@ -1,0 +1,50 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>{{ publicacion.titulo }}</h3>
+                <div class="btn-group" role="group">
+                    <a href="{% url 'publicaciones:editar_publicacion' publicacion.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'publicaciones:eliminar_publicacion' publicacion.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Información de la Publicación</h6>
+                        <p><strong>Autor:</strong> {{ publicacion.autor.estudiante.nombre }} {{ publicacion.autor.estudiante.apellido }}</p>
+                        <p><strong>Estado:</strong> 
+                            {% if publicacion.estado == 'publicado' %}
+                                <span class="badge bg-success">{{ publicacion.estado|title }}</span>
+                            {% elif publicacion.estado == 'borrador' %}
+                                <span class="badge bg-warning">{{ publicacion.estado|title }}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ publicacion.estado|title }}</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Estadísticas</h6>
+                        <p><strong>Fecha de Creación:</strong> {{ publicacion.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                        <p><strong>Última Actualización:</strong> {{ publicacion.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+                        <p><strong>Vistas:</strong> {{ publicacion.vistas }}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6 class="text-muted">Contenido</h6>
+                    <div class="bg-light p-3 rounded">
+                        {{ publicacion.contenido|linebreaks }}
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'publicaciones:publicacionesapp' %}" class="btn btn-secondary">← Volver a Publicaciones</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

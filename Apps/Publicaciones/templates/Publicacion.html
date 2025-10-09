@@ -1,0 +1,72 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a href="{% url 'publicaciones:adminapp' %}" class="btn btn-secondary mb-3">← Volver al Panel</a>
+        <h2 class="mb-1">Publicaciones de la Revista</h2>
+        <p class="lead mb-0">Todas las publicaciones realizadas por los estudiantes autorizados.</p>
+    </div>
+    <div class="btn-group" role="group">
+        <a href="{% url 'publicaciones:crear_publicacion' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Nueva Publicación
+        </a>
+    </div>
+</div>
+
+<table class="table table-striped">
+<thead class="table-dark">
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Estado</th>
+        <th>Fecha Publicación</th>
+        <th>Vistas</th>
+        <th>Contenido (Preview)</th>
+        <th width="180px">Acciones</th> 
+    </tr>
+</thead>
+<tbody>
+    {% if publicaciones %}
+        {% for publicacion in publicaciones %}
+        <tr>
+            <td><strong>{{ publicacion.titulo }}</strong></td>
+            <td>{{ publicacion.autor.estudiante.nombre }} {{ publicacion.autor.estudiante.apellido }}</td>
+            <td>
+                {% if publicacion.estado == 'publicado' %}
+                    <span class="badge bg-success">{{ publicacion.estado|title }}</span>
+                {% elif publicacion.estado == 'borrador' %}
+                    <span class="badge bg-warning">{{ publicacion.estado|title }}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ publicacion.estado|title }}</span>
+                {% endif %}
+            </td>
+            <td>{{ publicacion.fecha_creacion|date:"d/m/Y H:i" }}</td>
+            <td>{{ publicacion.vistas }}</td>
+            <td>{{ publicacion.contenido|truncatewords:10 }}...</td>
+            <td>
+                <div class="btn-group btn-group-sm" role="group">
+                    <a href="{% url 'publicaciones:detalle_publicacion' publicacion.pk %}" class="btn btn-info" title="Ver">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+                    <a href="{% url 'publicaciones:editar_publicacion' publicacion.pk %}" class="btn btn-warning" title="Editar">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{% url 'publicaciones:eliminar_publicacion' publicacion.pk %}" class="btn btn-danger" title="Eliminar">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="7" class="text-center"> 
+                <p class="text-muted">No hay publicaciones disponibles.</p>
+            </td>
+        </tr>
+    {% endif %}
+</tbody>
+</table>
+
+{% endblock contenido %}

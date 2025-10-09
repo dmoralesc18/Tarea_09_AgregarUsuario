@@ -1,0 +1,9 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-3">Página Principal</h2>    
+    <p>Bienvenido a la página principal del sitio web. Aquí puedes encontrar enlaces a la información de estudiantes, administradores y más.</p>
+
+    <a href="{% url 'home:Registro' %}" class="btn btn-primary">Registrar Usuario</a>
+{% endblock contenido %}

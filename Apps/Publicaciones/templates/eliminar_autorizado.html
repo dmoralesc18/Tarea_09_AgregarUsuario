@@ -1,0 +1,44 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3>Revocar Autorización</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>¡Advertencia!</strong> Al revocar esta autorización, el estudiante no podrá crear más publicaciones.
+                </div>
+                
+                <p>¿Está seguro que desea revocar la autorización de:</p>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ autorizado.estudiante.nombre }} {{ autorizado.estudiante.apellido }}</h5>
+                        <p class="card-text">
+                            <strong>Grado:</strong> {{ autorizado.estudiante.grado }}<br>
+                            <strong>Curso:</strong> {{ autorizado.estudiante.curso }}<br>
+                            <strong>Autorizado por:</strong> {{ autorizado.autorizado_por }}<br>
+                            <strong>Fecha de Autorización:</strong> {{ autorizado.fecha_autorizacion|date:"d/m/Y H:i" }}<br>
+                            <strong>Estado:</strong> 
+                            {% if autorizado.activo %}
+                                <span class="badge bg-success">Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'publicaciones:autorizadosapp' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Sí, Revocar Autorización</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,120 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Detalle de Autorización</h3>
+                <div class="btn-group" role="group">
+                    <a href="{% url 'publicaciones:editar_autorizado' autorizado.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'publicaciones:eliminar_autorizado' autorizado.pk %}" class="btn btn-danger btn-sm">Revocar</a>
+                    <a href="{% url 'publicaciones:toggle_estado_autorizado' autorizado.pk %}" class="btn btn-info btn-sm">
+                        {% if autorizado.activo %}Desactivar{% else %}Activar{% endif %}
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Información del Estudiante</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%">Nombre:</th>
+                                <td>{{ autorizado.estudiante.nombre }} {{ autorizado.estudiante.apellido }}</td>
+                            </tr>
+                            <tr>
+                                <th>Edad:</th>
+                                <td>{{ autorizado.estudiante.edad }} años</td>
+                            </tr>
+                            <tr>
+                                <th>Grado:</th>
+                                <td>{{ autorizado.estudiante.grado }}</td>
+                            </tr>
+                            <tr>
+                                <th>Curso:</th>
+                                <td>{{ autorizado.estudiante.curso }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Información de Autorización</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%">Autorizado por:</th>
+                                <td>{{ autorizado.autorizado_por }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha:</th>
+                                <td>{{ autorizado.fecha_autorizacion|date:"d/m/Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado:</th>
+                                <td>
+                                    {% if autorizado.activo %}
+                                        <span class="badge bg-success">Activo</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="mt-4">
+                    <h5>Publicaciones del Estudiante 
+                        <span class="badge bg-primary">{{ publicaciones.count }}</span>
+                    </h5>
+                    
+                    {% if publicaciones %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Estado</th>
+                                        <th>Fecha</th>
+                                        <th>Vistas</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for publicacion in publicaciones %}
+                                    <tr>
+                                        <td>{{ publicacion.titulo|truncatechars:50 }}</td>
+                                        <td>
+                                            {% if publicacion.estado == 'publicado' %}
+                                                <span class="badge bg-success">{{ publicacion.estado|title }}</span>
+                                            {% elif publicacion.estado == 'borrador' %}
+                                                <span class="badge bg-warning">{{ publicacion.estado|title }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ publicacion.estado|title }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ publicacion.fecha_creacion|date:"d/m/Y" }}</td>
+                                        <td>{{ publicacion.vistas }}</td>
+                                        <td>
+                                            <a href="{% url 'publicaciones:detalle_publicacion' publicacion.pk %}" class="btn btn-sm btn-outline-primary">Ver</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Este estudiante aún no ha realizado ninguna publicación.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{% url 'publicaciones:autorizadosapp' %}" class="btn btn-secondary">← Volver a Autorizados</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

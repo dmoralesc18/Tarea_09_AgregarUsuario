@@ -1,0 +1,18 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-1">Publicaciones y Estudiantes Autorizados</h2>
+        <p class="lead mb-0">Publicaciones y estudiantes autorizados para realizar publicaciones en la revista.</p>
+    </div>
+</div>
+
+    <a href="{% url 'publicaciones:publicacionesapp' %}" class="btn btn-success">
+        <i class="fas fa-user-plus"></i> Publicaciones
+    </a>
+    <a href="{% url 'publicaciones:autorizadosapp' %}" class="btn btn-success">
+        <i class="fas fa-user-minus"></i> Autorizar Estudiante
+    </a>
+
+{% endblock contenido %}

@@ -1,0 +1,37 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3>Confirmar Eliminación</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>¡Advertencia!</strong> Esta acción no se puede deshacer.
+                </div>
+                
+                <p>¿Está seguro que desea eliminar al administrador:</p>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ administrador.nombre }}</h5>
+                        <p class="card-text">
+                            <strong>Edad:</strong> {{ administrador.edad }} años<br>
+                            <strong>Cargo:</strong> {{ administrador.cargo }}<br>
+                            <strong>Registrado:</strong> {{ administrador.creacion|date:"d/m/Y H:i" }}
+                        </p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'principal:Administradoresapp' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

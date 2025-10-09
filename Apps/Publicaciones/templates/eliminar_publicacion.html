@@ -1,0 +1,39 @@
+{% extends 'Base.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h3>Confirmar Eliminación de Publicación</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <strong>¡Advertencia!</strong> Esta acción no se puede deshacer.
+                </div>
+                
+                <p>¿Está seguro que desea eliminar la publicación:</p>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ publicacion.titulo }}</h5>
+                        <p class="card-text">
+                            <strong>Autor:</strong> {{ publicacion.autor.estudiante.nombre }} {{ publicacion.autor.estudiante.apellido }}<br>
+                            <strong>Estado:</strong> {{ publicacion.estado|title }}<br>
+                            <strong>Fecha:</strong> {{ publicacion.fecha_creacion|date:"d/m/Y H:i" }}<br>
+                            <strong>Vistas:</strong> {{ publicacion.vistas }}
+                        </p>
+                        <p class="text-muted">{{ publicacion.contenido|truncatewords:20 }}...</p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'publicaciones:publicacionesapp' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
