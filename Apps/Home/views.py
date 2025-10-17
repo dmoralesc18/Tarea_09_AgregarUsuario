@@ -7,7 +7,6 @@ from django.urls import reverse_lazy
 from .models import Usuario
 from .froms import RegistroForm, LoginForm
 
-# Create your views here.
 
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'Home.html'

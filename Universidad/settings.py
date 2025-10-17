@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'Apps.Home.middleware.AuthenticationMiddleware',  
 ]
 
 ROOT_URLCONF = 'Universidad.urls'
@@ -134,3 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'home:Login'
 LOGIN_REDIRECT_URL = 'home:Homeapp'
 LOGOUT_REDIRECT_URL = 'home:Login'
+
+# Rutas públicas (sin autenticación requerida)
+PUBLIC_URLS = [
+    '/Home/login/',
+    '/Home/registro/',
+    '/admin/',
+]

@@ -22,10 +22,14 @@
                     <form method="post" action="{% url 'home:Logout' %}" style="display:inline;">
                     {% csrf_token %}
                     <a class="nav-link" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
+               
+                    {% if user.is_superuser or user.is_staff %}
+                    <a class="nav-link" href="{% url 'home:Registro' %}">Registrar Usuario</a>
+                    {% endif %}
+
                     </form>
                     {% else %}
                          <a class="nav-link" href="{% url 'home:Login' %}">Iniciar Sesión</a>
-                        <a class="nav-link" href="{% url 'home:Registro' %}">Registrarse</a>
                     {% endif %}
                 </div>
             </div>
