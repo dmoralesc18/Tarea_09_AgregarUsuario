@@ -12,8 +12,12 @@
             <div class="container-fluid">
                 <div class="navbar-nav mx-auto">
                     <a class="nav-link" href="{% url 'home:Homeapp' %}">Home</a> 
-                    <a class="nav-link" href="{% url 'principal:Estudianteapp' %}">Estudiantes</a> 
+
+                    {% if user.is_superuser or user.is_staff %} 
+                    <a class="nav-link" href="{% url 'principal:Estudianteapp' %}">Estudiantes</a>                   
                     <a class="nav-link" href="{% url 'principal:Administradoresapp' %}">Administradores</a> 
+                    {% endif %}
+                    
                     <a class="nav-link" href="{% url 'publicaciones:adminapp' %}">Publicaciones</a>
                     <a class="nav-link" href="{% url 'informacion:Informacionapp' %}">Acerca de</a>
                     
