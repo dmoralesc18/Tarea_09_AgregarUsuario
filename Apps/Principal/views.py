@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
+from django.db.models import Q
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -12,7 +13,20 @@ class EstudiantesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['estudiantes'] = estudiante.objects.all()
+        
+        query = self.request.GET.get('q')
+        if query:
+            filtros = (
+                Q(nombre__icontains=query)
+                | Q(apellido__icontains=query)
+                | Q(grado__icontains=query)
+                | Q(curso__icontains=query)
+            )
+            if str(query).isdigit():
+                filtros = filtros | Q(edad=int(query))
+            context['estudiantes'] = estudiante.objects.filter(filtros)
+        else:
+            context['estudiantes'] = estudiante.objects.all()
         return context
 
 class AdministradoresView(TemplateView):
@@ -20,7 +34,18 @@ class AdministradoresView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['administradores'] = administradores.objects.all()
+        
+        query = self.request.GET.get('nombre')
+        if query:
+            filtros = (
+                Q(nombre__icontains=query)
+                | Q(cargo__icontains=query)
+            )
+            if str(query).isdigit():
+                filtros = filtros | Q(edad=int(query))
+            context['administradores'] = administradores.objects.filter(filtros)
+        else:
+            context['administradores'] = administradores.objects.all()
         return context
 
 def crear_estudiante(request):
@@ -68,6 +93,13 @@ def detalle_estudiante(request, pk):
     return render(request, 'detalle_estudiante.html', {
         'estudiante': estudiante_obj
     })
+
+def get_queryset(self):
+        vnombre = self.request.GET.get("nombre", None)
+        if vnombre:
+            return estudiante.objects.filter(nombre__icontains=vnombre)
+        else:
+            return estudiante.objects.all()
 
 def crear_administrador(request):
     if request.method == 'POST':

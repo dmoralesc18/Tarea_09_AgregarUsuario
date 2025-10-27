@@ -13,7 +13,22 @@ class PublicacionesView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['publicaciones'] = Publicacion.objects.all().order_by('-fecha_creacion')
+        # Filtro exclusivo para publicaciones usando el parámetro 'pub'
+        query_pub = self.request.GET.get('pub')
+        qs = Publicacion.objects.all()
+        if query_pub:
+            filtros = (
+                Q(titulo__icontains=query_pub)
+                | Q(contenido__icontains=query_pub)
+                | Q(autor__estudiante__nombre__icontains=query_pub)
+                | Q(autor__estudiante__apellido__icontains=query_pub)
+            )
+            # También permite buscar por estado exacto si coincide
+            estados_validos = {'borrador', 'publicado', 'archivado'}
+            if str(query_pub).lower() in estados_validos:
+                filtros = filtros | Q(estado=str(query_pub).lower())
+            qs = qs.filter(filtros)
+        context['publicaciones'] = qs.order_by('-fecha_creacion')
         return context
 
 class AutorizadosView(TemplateView):
@@ -21,7 +36,21 @@ class AutorizadosView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['autorizados'] = EstudianteAutorizado.objects.filter(activo=True).order_by('-fecha_autorizacion')
+        # Filtro exclusivo para autorizados usando el parámetro 'aut'
+        query_aut = self.request.GET.get('aut')
+        qs = EstudianteAutorizado.objects.filter(activo=True)
+        if query_aut:
+            filtros = (
+                Q(estudiante__nombre__icontains=query_aut)
+                | Q(estudiante__apellido__icontains=query_aut)
+                | Q(estudiante__grado__icontains=query_aut)
+                | Q(estudiante__curso__icontains=query_aut)
+                | Q(autorizado_por__nombre__icontains=query_aut)
+            )
+            if str(query_aut).isdigit():
+                filtros = filtros | Q(estudiante__edad=int(query_aut))
+            qs = qs.filter(filtros)
+        context['autorizados'] = qs.order_by('-fecha_autorizacion')
         return context
 
 def crear_publicacion(request):

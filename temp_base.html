@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8" />
@@ -7,10 +7,7 @@
 </head>
 <body>
     <div class="container mt-4">
-        {% block header_title %}
         <h1 class="text-center mb-4">Bienvenido</h1>
-        {% endblock header_title %}
-        {% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mb-4">
             <div class="container-fluid">
                 <div class="navbar-nav mx-auto">
@@ -28,7 +25,7 @@
                     <span class="nav-link">{{ user.username }}</span>
                     <form method="post" action="{% url 'home:Logout' %}" style="display:inline;">
                     {% csrf_token %}
-                    <a class="nav-link" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); this.closest('form').submit();">Cerrar SesiÃ³n</a>
                
                     {% if user.is_superuser or user.is_staff %}
                     <a class="nav-link" href="{% url 'home:Registro' %}">Registrar Usuario</a>
@@ -36,12 +33,11 @@
 
                     </form>
                     {% else %}
-                         <a class="nav-link" href="{% url 'home:Login' %}">Iniciar Sesión</a>
+                         <a class="nav-link" href="{% url 'home:Login' %}">Iniciar SesiÃ³n</a>
                     {% endif %}
                 </div>
             </div>
         </nav>
-        {% endblock navbar %}
     
     {% block contenido %}
     {% endblock contenido %}
